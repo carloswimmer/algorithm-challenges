@@ -29,6 +29,90 @@ function getBlackQueenPosition() {
   return stringfied;
 }
 
+function verticalAttacks(c, r) {
+  const attacks = [
+    [c + 1, r],
+    [c + 2, r],
+    [c + 3, r],
+    [c - 1, r],
+    [c - 2, r],
+    [c - 3, r],
+  ];
+
+  return attacks;
+}
+
+function horizontalAttacks(c, r) {
+  const attacks = [
+    [c, r + 1],
+    [c, r + 2],
+    [c, r + 3],
+    [c, r - 1],
+    [c, r - 2],
+    [c, r - 3],
+  ];
+
+  return attacks;
+}
+
+function diagonal45Attacks(c, r) {
+  const attacks = [
+    [c + 1, r + 1],
+    [c + 2, r + 2],
+    [c + 3, r + 3],
+    [c - 1, r - 1],
+    [c - 2, r - 2],
+    [c - 3, r - 3],
+  ];
+
+  return attacks;
+}
+
+function diagonal315Attacks(c, r) {
+  const attacks = [
+    [c + 2, r - 1],
+    [c + 1, r - 2],
+    [c + 3, r - 3],
+    [c - 1, r + 1],
+    [c - 2, r + 2],
+    [c - 3, r + 3],
+  ];
+
+  return attacks;
+}
+
+function getQAttacks({ c, r }) {
+  const attacks = [
+    ...verticalAttacks(c, r),
+    ...horizontalAttacks(c, r),
+    ...diagonal45Attacks(c, r),
+    ...diagonal315Attacks(c, r),
+  ];
+
+  const possibles = attacks.filter((att) => att[0] >= 0 && att[1] >= 1);
+  const stringfied = possibles.map((item) => item.join(''));
+
+  return stringfied;
+}
+
+function getRAttacks({ c, r }) {
+  const attacks = [...verticalAttacks(c, r), ...horizontalAttacks(c, r)];
+
+  const possibles = attacks.filter((att) => att[0] >= 0 && att[1] >= 1);
+  const stringfied = possibles.map((item) => item.join(''));
+
+  return stringfied;
+}
+
+function getBAttacks({ c, r }) {
+  const attacks = [...diagonal45Attacks(c, r), ...diagonal315Attacks(c, r)];
+
+  const possibles = attacks.filter((att) => att[0] >= 0 && att[1] >= 1);
+  const stringfied = possibles.map((item) => item.join(''));
+
+  return stringfied;
+}
+
 function getNAttacks({ c, r }) {
   const attacks = [
     [c - 2, r + 1],
@@ -47,27 +131,12 @@ function getNAttacks({ c, r }) {
   return stringfied;
 }
 
-function getQAttacks({ c, r }) {
-  const attacks = [
-    [c + 1, r],
-    [c + 2, r],
-    [c + 3, r],
-    [c - 1, r],
-    [c - 2, r],
-    [c - 3, r],
-    [c, r + 1],
-    [c, r + 2],
-    [c, r + 3],
-    [c, r - 1],
-    [c, r - 2],
-    [c, r - 3],
-  ];
-}
-
 const wnAttacks = getNAttacks(getWhitePosition('N'));
+const wqAttacks = getQAttacks(getWhitePosition('Q'));
 const bqPosition = getBlackQueenPosition();
-const answer = wnAttacks.includes(bqPosition);
+const answer = wqAttacks.includes(bqPosition);
 
 console.log('wnAttacks', wnAttacks);
+console.log('wqAttacks', wqAttacks);
 console.log('bqPosition', bqPosition);
 console.log('answer', answer ? 'YES' : 'NO');
