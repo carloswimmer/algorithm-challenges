@@ -1,38 +1,11 @@
-const whites = [
-  ['N', 'B', 2],
-  ['Q', 'B', 1],
+const wh = [
+  ['N', 'B', '2'],
+  ['Q', 'B', '1'],
 ];
 
-const blacks = [['Q', 'A', 4]];
+const bl = [['Q', 'A', '4']];
 
-const moves = 1;
-
-const cols = ['A', 'B', 'C', 'D'];
-
-function getWhitePosition(t) {
-  let coordinates = null;
-
-  const position = whites.find((item) => item[0] === t);
-
-  if (position) {
-    position[1] = cols.indexOf(position[1]);
-    coordinates = {
-      c: position[1],
-      r: position[2],
-    };
-  }
-
-  return coordinates;
-}
-
-function getBlackQueenPosition() {
-  const position = blacks.find((item) => item.includes('Q'));
-  position[1] = cols.indexOf(position[1]);
-  position.shift();
-  const stringfied = position.join('');
-
-  return stringfied;
-}
+const mv = 1;
 
 function verticalAttacks(c, r) {
   const attacks = [
@@ -151,17 +124,43 @@ function getNAttacks(coordinates) {
   return attacks.length ? getInnerBoardFormatted(attacks) : attacks;
 }
 
-const wNAttacks = getNAttacks(getWhitePosition('N'));
-const wBAttacks = getBAttacks(getWhitePosition('B'));
-const wRAttacks = getRAttacks(getWhitePosition('R'));
-const wQAttacks = getQAttacks(getWhitePosition('Q'));
-const allAttacks = [...wNAttacks, ...wBAttacks, ...wRAttacks, ...wQAttacks];
-const bQPosition = getBlackQueenPosition();
-const answer = allAttacks.includes(bQPosition);
+function simplifiedChessEngine(whites, blacks, moves) {
+  const cols = ['A', 'B', 'C', 'D'];
 
-console.log('wNAttacks', wNAttacks);
-console.log('wBAttacks', wBAttacks);
-console.log('wRAttacks', wRAttacks);
-console.log('wQAttacks', wQAttacks);
-console.log('bQPosition', bQPosition);
-console.log('answer', answer ? 'YES' : 'NO');
+  function getWhitePosition(t) {
+    let coordinates = null;
+
+    const position = whites.find((item) => item[0] === t);
+
+    if (position) {
+      position[1] = cols.indexOf(position[1]);
+      coordinates = {
+        c: position[1],
+        r: Number(position[2]),
+      };
+    }
+
+    return coordinates;
+  }
+
+  function getBlackQueenPosition() {
+    const position = blacks.find((item) => item.includes('Q'));
+    position[1] = cols.indexOf(position[1]);
+    position.shift();
+    const stringfied = position.join('');
+
+    return stringfied;
+  }
+
+  const wNAttacks = getNAttacks(getWhitePosition('N'));
+  const wBAttacks = getBAttacks(getWhitePosition('B'));
+  const wRAttacks = getRAttacks(getWhitePosition('R'));
+  const wQAttacks = getQAttacks(getWhitePosition('Q'));
+  const allAttacks = [...wNAttacks, ...wBAttacks, ...wRAttacks, ...wQAttacks];
+  const bQPosition = getBlackQueenPosition();
+  const answer = allAttacks.includes(bQPosition);
+
+  return answer ? 'YES' : 'NO';
+}
+
+console.log(simplifiedChessEngine(wh, bl, mv));
